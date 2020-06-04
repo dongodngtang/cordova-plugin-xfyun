@@ -6,7 +6,6 @@ var exec = require('cordova/exec');
 
 /// 初始化Xfyun
 /// appid: 应用ID 可在官网查询
-/// engineMode: 引擎模式(如null则为'auto')
 exports.init = function(appid, success, error) {
     exec(success, error, "Xfyun", "init", [appid]);
 };

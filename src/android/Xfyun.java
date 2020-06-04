@@ -195,6 +195,19 @@ public class Xfyun extends CordovaPlugin {
         // 音量变化
         public void onVolumeChanged(int volume, byte[] data) {
             Log.d(TAG, "onVolumeChanged" + volume);
+            // try{
+            //     JSONObject main = new JSONObject();
+            //     main.put("action", "onVolumeChanged");
+
+            //     JSONObject json = new JSONObject();
+            //     json.put("volume", volume);
+            //     json.put("data", data);
+            //     main.put("data", json);
+
+            //     PluginResult pResult = new PluginResult(PluginResult.Status.OK, main);
+            //     pResult.setKeepCallback(true);
+            //     callbackContext.sendPluginResult(pResult);
+            // }catch(JSONException e){}
         }
 
         // 返回结果
