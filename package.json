@@ -1,0 +1,27 @@
+{
+  "name": "cordova-plugin-xfyun",
+  "version": "1.0.0",
+  "description": "xfyun speech recognition",
+  "cordova": {
+    "id": "cordova-plugin-xfyun",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dongodngtang/cordova-plugin-xfyun.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "author": "lorne",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dongodngtang/cordova-plugin-xfyun/issues"
+  },
+  "homepage": "https://github.com/dongodngtang/cordova-plugin-xfyun#readme"
+}
