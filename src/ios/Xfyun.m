@@ -83,7 +83,7 @@
     recognizer.delegate = self;
  
     [recognizer setParameter:grammerID forKey:[IFlySpeechConstant LANGUAGE]];
-    
+    [recognizer setParameter:@"0" forKey:@"asr_ptt"];
     // 启动识别
     [recognizer startListening];
     

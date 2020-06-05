@@ -40,8 +40,8 @@ public class Xfyun extends CordovaPlugin {
     private CallbackContext mNoPerGrammarListeningCallbackContext;
     private JSONArray mNoPerGrammarArgs;
 
-    private String[] permissions = { Manifest.permission.RECORD_AUDIO, 
-        // Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    private String[] permissions = { Manifest.permission.RECORD_AUDIO,
+            // Manifest.permission.WRITE_EXTERNAL_STORAGE,
             // Manifest.permission.READ_EXTERNAL_STORAGE
     };
 
@@ -85,7 +85,7 @@ public class Xfyun extends CordovaPlugin {
         public void onInit(int code) {
             Log.d(TAG, "SpeechRecognizer init() code = " + code);
             if (code != ErrorCode.SUCCESS) {
-                Log.d(TAG,"初始化失败，错误码：" + code);
+                Log.d(TAG, "初始化失败，错误码：" + code);
             }
         }
     };
@@ -117,6 +117,8 @@ public class Xfyun extends CordovaPlugin {
         } else {
             mAsr.setParameter(SpeechConstant.LANGUAGE, language);
         }
+        mAsr.setParameter(SpeechConstant.ASR_PTT, "0");
+       
         Log.e(TAG, "language:" + language);// 设置语言
 
         int ret = mAsr.startListening(new CustomRecognizerListener(callbackContext));
@@ -196,17 +198,17 @@ public class Xfyun extends CordovaPlugin {
         public void onVolumeChanged(int volume, byte[] data) {
             Log.d(TAG, "onVolumeChanged" + volume);
             // try{
-            //     JSONObject main = new JSONObject();
-            //     main.put("action", "onVolumeChanged");
+            // JSONObject main = new JSONObject();
+            // main.put("action", "onVolumeChanged");
 
-            //     JSONObject json = new JSONObject();
-            //     json.put("volume", volume);
-            //     json.put("data", data);
-            //     main.put("data", json);
+            // JSONObject json = new JSONObject();
+            // json.put("volume", volume);
+            // json.put("data", data);
+            // main.put("data", json);
 
-            //     PluginResult pResult = new PluginResult(PluginResult.Status.OK, main);
-            //     pResult.setKeepCallback(true);
-            //     callbackContext.sendPluginResult(pResult);
+            // PluginResult pResult = new PluginResult(PluginResult.Status.OK, main);
+            // pResult.setKeepCallback(true);
+            // callbackContext.sendPluginResult(pResult);
             // }catch(JSONException e){}
         }
 
