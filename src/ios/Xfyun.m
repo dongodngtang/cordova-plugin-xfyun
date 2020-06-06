@@ -83,7 +83,11 @@
     recognizer.delegate = self;
  
     [recognizer setParameter:grammerID forKey:[IFlySpeechConstant LANGUAGE]];
+    if(grammerID isEqualToString:@"zh_cn"){
+        [recognizer setParameter:@"mandarin" forKey:@"accent"];
+    }
     [recognizer setParameter:@"0" forKey:@"asr_ptt"];
+    [recognizer setParameter:@"700" forKey:@"vad_eos"];
     // 启动识别
     [recognizer startListening];
     
