@@ -75,15 +75,15 @@
 // 开始监听命令
 - (void)startListeningGrammar:(CDVInvokedUrlCommand*)command
 {
-    NSString* grammerID = [command.arguments objectAtIndex:0];
+    NSString* language = [command.arguments objectAtIndex:0];
 
 
     // 设置命令ID
     IFlySpeechRecognizer* recognizer = [IFlySpeechRecognizer sharedInstance];
     recognizer.delegate = self;
  
-    [recognizer setParameter:grammerID forKey:[IFlySpeechConstant LANGUAGE]];
-    if(grammerID isEqualToString:@"zh_cn"){
+    [recognizer setParameter:language forKey:[IFlySpeechConstant LANGUAGE]];
+    if([language isEqualToString:@"zh_cn"]){
         [recognizer setParameter:@"mandarin" forKey:@"accent"];
     }
     [recognizer setParameter:@"0" forKey:@"asr_ptt"];
