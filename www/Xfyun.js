@@ -33,3 +33,7 @@ exports.stopListening = function(success, error) {
 exports.clear = function(success, error) {
     exec(success, error, "Xfyun", "cancelGrammar", []);
 };
+
+exports.androidPermission = function(success, error) {
+    exec(success, error, "Xfyun", "checkPermission", []);
+};

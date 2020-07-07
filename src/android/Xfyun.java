@@ -1,6 +1,11 @@
 package org.cordova.plugin.xfyun;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
 import android.util.Log;
 import android.os.Bundle;
 import android.Manifest;
@@ -41,6 +46,10 @@ public class Xfyun extends CordovaPlugin {
     private JSONArray mNoPerGrammarArgs;
 
     private String[] permissions = { Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.BLUETOOTH,
+            Manifest.permission.BLUETOOTH_ADMIN
             // Manifest.permission.WRITE_EXTERNAL_STORAGE,
             // Manifest.permission.READ_EXTERNAL_STORAGE
     };
@@ -61,6 +70,10 @@ public class Xfyun extends CordovaPlugin {
         }
         if (action.equals("clear")) {
             this.cancelGrammar(args, callbackContext);
+            return true;
+        }
+        if (action.equals("checkPermission")) {
+            this.checkPermission(args, callbackContext);
             return true;
         }
 
@@ -89,6 +102,20 @@ public class Xfyun extends CordovaPlugin {
             }
         }
     };
+    private void checkPermission(JSONArray args, CallbackContext callbackContext) throws JSONException {
+        // 获取相关权限
+        if (!hasPermisssion()) {
+            this.cordova.requestPermissions(this, 0, permissions);
+            mNoPerGrammarArgs = args;
+            mNoPerGrammarListeningCallbackContext = callbackContext;
+
+            PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT);
+            result.setKeepCallback(true);
+            callbackContext.sendPluginResult(result);
+            return;
+        }
+        callbackContext.success();
+    }
 
     /// 监听命令
     private void startListeningGrammar(JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -175,19 +202,46 @@ public class Xfyun extends CordovaPlugin {
     public void requestPermissions(int requestCode) {
         this.cordova.requestPermissions(this, requestCode, permissions);
     }
-
+    AlertDialog mPermissionDialog;
     @Override
     public void onRequestPermissionResult(int requestCode, String[] permissions, int[] grantResults)
             throws JSONException {
+        Context context = cordova.getContext();
+        final String mPackName = context.getPackageName();
         if (mNoPerGrammarListeningCallbackContext != null) {
             for (int r : grantResults) {
                 if (r == PackageManager.PERMISSION_DENIED) {
                     Log.e(TAG, "相关权限被拒绝!");
                     mNoPerGrammarListeningCallbackContext.error(-2);
+                    mPermissionDialog = new AlertDialog.Builder(context).setMessage("已禁用权限，请手动授予").setPositiveButton("设置", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            cancelPermissionDialog();
+                            Uri packageURI = Uri.parse("package:" + mPackName);
+                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
+                            context.startActivity(intent);
+
+                        }
+                    }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //关闭页面或者做其他操作
+                            cancelPermissionDialog();
+                        }
+                    }).create();
+                    mPermissionDialog.show();
                     return;
                 }
             }
-            this.startListeningGrammar(mNoPerGrammarArgs, mNoPerGrammarListeningCallbackContext);
+//            this.startListeningGrammar(mNoPerGrammarArgs, mNoPerGrammarListeningCallbackContext);
+        }
+    }
+
+    //关闭对话框
+    private void cancelPermissionDialog() {
+        if (mPermissionDialog != null) {
+            mPermissionDialog.cancel();
+            mPermissionDialog = null;
         }
     }
 
